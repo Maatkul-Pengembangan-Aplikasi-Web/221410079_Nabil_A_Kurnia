@@ -10,8 +10,13 @@
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900">
                     <div class="d-flex justify-content-between align-items-center mb-3">
+                        @if (Session::has('success'))
+                            <div class="alert alert-success">
+                                {{ Session::get('success') }}
+                            </div>
+                        @endif
                         <div class="ml-auto d-flex">
-                            <a href="#" class="btn btn-primary mr-2">Tambah Program Studi</a>
+                            <a href="{{ route('prodi.create') }}" class="btn btn-primary mr-2">Tambah Program Studi</a>
                             <form action="" method="GET" class="d-flex">
                                 <input type="text" name="search" class="form-control" placeholder="Pencarian">
                                 <button class="btn btn-primary ml-2" type="submit">
@@ -30,14 +35,20 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td></td>
-                                <td></td>
-                                <td>
-                                    <a href="#"class="btn btn-secondary">Edit</a>
-                                    <a href="#"class="btn btn-danger">Hapus</a>
-                                </td>
-                            </tr>
+                            @foreach ($prodis as $prodi)
+                                <tr>
+                                    <td>{{ $loop->iteration }}</td>
+                                    <td>{{ $prodi->nama }}</td>
+                                    <td>
+                                        <a href="{{ route('prodi.edit', $prodi->id) }}" class="btn btn-secondary">Edit</a>
+                                        <form action="{{ route('prodi.delete', $prodi->id) }}" method="POST" class="d-inline">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button class="btn btn-danger">Hapus</button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            @endforeach
                         </tbody>
                     </table>
 
