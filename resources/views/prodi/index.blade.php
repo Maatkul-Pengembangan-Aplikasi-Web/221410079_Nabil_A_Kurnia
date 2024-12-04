@@ -44,11 +44,7 @@
                                     <td>{{ $prodi->nama }}</td>
                                     <td>
                                         <a href="{{ route('prodi.edit', $prodi->id) }}" class="btn btn-secondary">Edit</a>
-                                        <form action="{{ route('prodi.delete', $prodi->id) }}" method="POST" class="d-inline">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button class="btn btn-danger">Hapus</button>
-                                        </form>
+                                        <button class="btn btn-danger" onclick="confirmDelete({{ $prodi->id }}, '{{ $prodi->nama }}')">Hapus</button>
                                     </td>
                                 </tr>
                             @endforeach
@@ -62,6 +58,39 @@
                         </div>
                     @endif
 
+                    <!-- Delete Confirmation Modal -->
+                    <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-content">
+                                <form id="deleteForm" method="POST">
+                                    @csrf
+                                    @method('DELETE')
+
+                                    <div class="modal-header bg-danger text-white">
+                                        <h5 class="modal-title" id="deleteModalLabel">Konfirmasi Penghapusan</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <p class="fs-5">Apakah Anda yakin ingin menghapus <span id="prodiName"></span>?</p>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batalkan</button>
+                                        <button type="submit" class="btn btn-danger">Hapus</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- JavaScript -->
+                    <script>
+                        function confirmDelete(id, name) {
+                            const deleteUrl = "{{ route('prodi.delete', ':id') }}".replace(':id', id);
+                            document.getElementById('deleteForm').action = deleteUrl;
+                            document.getElementById('prodiName').textContent = name;
+                            new bootstrap.Modal(document.getElementById('deleteModal')).show();
+                        }
+                    </script>
                 </div>
             </div>
         </div>

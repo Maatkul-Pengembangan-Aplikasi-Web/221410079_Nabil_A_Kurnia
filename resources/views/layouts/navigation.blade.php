@@ -18,6 +18,9 @@
                     <x-nav-link :href="route('/prodi')" :active="request()->routeIs('/prodi')">
                         {{ __('Program Studi') }}
                     </x-nav-link>
+                    <x-nav-link :href="route('/mahasiswa')" :active="request()->routeIs('/mahasiswa')">
+                        {{ __('Mahasiswa') }}
+                    </x-nav-link>
                 </div>
             </div>
 
